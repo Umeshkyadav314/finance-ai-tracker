@@ -17,15 +17,15 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
-  generator: "v0.app",
+  title: "finance ai tracker App",
+  description: "Created with finance ai tracker",
+  generator: "finance ai tracker.app",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <body className="font-sans bg-background text-foreground">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+      <body className="font-sans bg-background text-foreground" suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

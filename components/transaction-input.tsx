@@ -80,8 +80,12 @@ export function TransactionInput({ onCreated }: { onCreated: () => void }) {
             onChange={(e) => setRaw(e.target.value)}
           />
         </div>
-        <div className="flex items-center gap-3">
-          <Button onClick={handleParse} disabled={!raw || loading} className="bg-blue-600 hover:bg-blue-700 text-white">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <Button
+            onClick={handleParse}
+            disabled={!raw || loading}
+            className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
+          >
             {loading ? "Parsing..." : "Parse with AI"}
           </Button>
           {error && <span className="text-sm text-rose-600">{error}</span>}
@@ -115,15 +119,19 @@ export function TransactionInput({ onCreated }: { onCreated: () => void }) {
                 Date: <strong>{parsed.date ? new Date(parsed.date).toLocaleString() : "-"}</strong>
               </div>
             </div>
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <Button
                 onClick={handleConfirm}
                 disabled={loading}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white w-full sm:w-auto"
               >
                 {loading ? "Saving..." : "Confirm & Save"}
               </Button>
-              <Button variant="outline" onClick={() => setParsed(null)}>
+              <Button
+                variant="outline"
+                onClick={() => setParsed(null)}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
             </div>
