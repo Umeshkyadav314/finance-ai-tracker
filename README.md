@@ -55,7 +55,7 @@ Google OAuth redirect URI (local):
 - Google sign-in/out, secure session, per-user data isolation
 - Natural language entry → AI parse → confirm → save
 - Dashboard: summary cards, category pie, monthly trends line
-- Transaction list with search, filters, delete
+- Transaction list with search, filters, and delete
 - Light/Dark toggle (bonus)
 
 ## Environment
