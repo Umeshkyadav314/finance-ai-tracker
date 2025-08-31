@@ -17,32 +17,25 @@ Intelligent finance tracker with Google OAuth, AI-powered natural language trans
 
 ## Screenshots  
 
-1. Landing Page
-
+1. Landing Page  
 ![Landing Page](/public/landingPage.png)  
 
-2. Register Page
-
+2. Register Page  
 ![Register Page](/public/registerPage.png)  
 
-3. Login Page
-
+3. Login Page  
 ![Login Page](/public/loginPage.png)  
 
-4. Google Account
-
+4. Google Account  
 ![Google Account](/public/googleAccount.png)  
 
-5. Monthly Trends & Savings
-
+5. Monthly Trends & Savings  
 ![Monthly Trends & Savings](/public/graph.png)  
 
-6. Savings & Net Worth Trend
-
+6. Savings & Net Worth Trend  
 ![Savings & Net Worth Trend](/public/dom.png)  
 
 7. All Transactions  
-
 ![All Transactions](/public/all_trans.png)  
 
 
