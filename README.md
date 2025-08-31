@@ -18,7 +18,7 @@ Intelligent finance tracker with Google OAuth, AI-powered natural language trans
 ## Screenshots  
 
 1. Landing Page
-  
+
 ![Landing Page](/public/landingPage.png)  
 
 2. Register Page 
@@ -27,11 +27,11 @@ Intelligent finance tracker with Google OAuth, AI-powered natural language trans
 
 3. Login Page  
 
-![Login Page](/public/loginPage.png)  
+![Login Page](/public/loginpage.png)  
 
 4. Google Account  
 
-![Google Account](/public/googleAccount.png)  
+![Google Account](/public/googleaccount.png)  
 
 5. Monthly Trends & Savings 
 
