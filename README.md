@@ -2,11 +2,7 @@
 
 Intelligent finance tracker with Google OAuth, AI-powered natural language transaction parsing, and a beautiful dashboard (Credit Karma / Mint inspired).
 
-<p align="center">
-  <a href="https://finance-ai-tracker-eight.vercel.app/">
-    <img src="/public/images/landingPage.png" alt="Finance AI Tracker Demo" width="700"/>
-  </a>
-</p>
+
 
 ## 🚀 [Live Demo](https://finance-ai-tracker-eight.vercel.app/)
 
@@ -17,33 +13,31 @@ Intelligent finance tracker with Google OAuth, AI-powered natural language trans
 - Database: MongoDB (official driver). Prisma schema included for documentation.
 - AI: AI SDK + OpenAI (gpt-4o)
 
-## Environment
 
-Copy `.env.example` to Project Settings (or local .env):
-
-```
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-long-random-string
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-MONGODB_URI=mongodb+srv://USER:PASS@HOST/finance-ai?retryWrites=true&w=majority
 
 ## Screenshots  
-```
-![Landing Page](/public/images/landingPage.png)
 
-![Register Page](/public/images/registerPage.png)
+1. Landing Page  
+![Landing Page](/public/landingPage.png)  
 
-![Login Page](//images/loginpage.png)
+2. Register Page  
+![Register Page](/public/registerPage.png)  
 
-![Google Account](/public/images/googleaccount.png)
+3. Login Page  
+![Login Page](/public/loginPage.png)  
 
-![Monthly Trends & Savings](/public/images/graph.png)
+4. Google Account  
+![Google Account](/public/googleAccount.png)  
 
-![Savings & Net Worth Trend](/public/images/dom.png)
+5. Monthly Trends & Savings  
+![Monthly Trends & Savings](/public/graph.png)  
 
-![All Transactions](/public/images/all_trans.png)
-```
+6. Savings & Net Worth Trend  
+![Savings & Net Worth Trend](/public/dom.png)  
+
+7. All Transactions  
+![All Transactions](/public/all_trans.png)  
+
 
 Google OAuth redirect URI (local):
 
@@ -56,6 +50,18 @@ Google OAuth redirect URI (local):
 - Dashboard: summary cards, category pie, monthly trends line
 - Transaction list with search, filters, delete
 - Light/Dark toggle (bonus)
+
+## Environment
+
+Copy `.env.example` to Project Settings (or local .env):
+
+```
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-long-random-string
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+MONGODB_URI=mongodb+srv://USER:PASS@HOST/finance-ai?retryWrites=true&w=majority
+```
 
 ## API Endpoints (as required)
 
