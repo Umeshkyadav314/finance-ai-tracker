@@ -4,7 +4,7 @@ Intelligent finance tracker with Google OAuth, AI-powered natural language trans
 
 <p align="center">
   <a href="https://finance-ai-tracker-eight.vercel.app/">
-    <img src="https://finance-ai-tracker-eight.vercel.app/demo-screenshot.png" alt="Finance AI Tracker Demo" width="700"/>
+    <img src="/public/images/landingPage.png" alt="Finance AI Tracker Demo" width="700"/>
   </a>
 </p>
 
@@ -28,22 +28,22 @@ GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 MONGODB_URI=mongodb+srv://USER:PASS@HOST/finance-ai?retryWrites=true&w=majority
 
-> **Demo Screenshots:**  
+## Screenshots  
+```
+![Landing Page](/public/images/landingPage.png)
 
-![Landing Page](/public/landingPage.png)
+![Register Page](/public/images/registerPage.png)
 
-![Register Page](/public/registerPage.png)
+![Login Page](//images/loginpage.png)
 
-![Login Page](/public/loginpage.png)
+![Google Account](/public/images/googleaccount.png)
 
-![Google Account](/public/googleaccount.png)
+![Monthly Trends & Savings](/public/images/graph.png)
 
-![Monthly Trends & Savings](/public/graph.png)
+![Savings & Net Worth Trend](/public/images/dom.png)
 
-![Savings & Net Worth Trend](/public/dom.png)
-
-![All Transactions](/public/all_trans.png)
-
+![All Transactions](/public/images/all_trans.png)
+```
 
 Google OAuth redirect URI (local):
 
