@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { SummaryCards } from "@/components/summary-cards"
-import { CategoryPie, TrendsLine } from "@/components/charts"
+import { CategoryPie, TrendsLine, SpendingBarChart, SavingsAreaChart } from "@/components/charts"
 import { TransactionInput } from "@/components/transaction-input"
 import { TransactionList } from "@/components/transaction-list"
 import { AuthButton } from "@/components/auth-button"
@@ -28,8 +28,9 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <div className="text-lg sm:text-xl font-semibold text-blue-600">Dashboard</div>
             <div className="flex items-center gap-2 sm:gap-3">
-              <ThemeToggle />
+              
               <AuthButton />
+              <ThemeToggle />
             </div>
           </div>
         </div>
@@ -40,6 +41,10 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <CategoryPie />
             <TrendsLine />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <SpendingBarChart />
+            <SavingsAreaChart />
           </div>
           <TransactionsSection />
         </div>

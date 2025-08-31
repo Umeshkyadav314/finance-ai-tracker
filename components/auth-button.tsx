@@ -12,10 +12,10 @@ export function AuthButton() {
   if (!session) {
     return (
       <Button
-        onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-        className="bg-blue-600 hover:bg-blue-700 text-white"
+        onClick={() => window.location.href = "/auth/signin"}
+        className="bg-blue-600 hover:bg-blue-700 text-white cursor-pointer"
       >
-        Sign in with Google
+        Sign In
       </Button>
     )
   }
@@ -23,7 +23,7 @@ export function AuthButton() {
   return (
     <div className="flex items-center gap-3">
       <span className="text-sm text-muted-foreground">Hi, {session.user?.name || session.user?.email}</span>
-      <Button variant="outline" onClick={() => signOut({ callbackUrl: "/" })}>
+      <Button variant="outline" onClick={() => signOut({ callbackUrl: "/" })} className="cursor-pointer">
         Sign out
       </Button>
     </div>

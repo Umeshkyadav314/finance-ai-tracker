@@ -37,6 +37,7 @@ export type UserDoc = {
   email: string
   name?: string
   image?: string
+  password?: string
   createdAt: Date
   updatedAt: Date
 }

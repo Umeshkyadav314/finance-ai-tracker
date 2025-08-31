@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
+import { X } from "lucide-react"
 
 type Parsed = {
   amount: number
@@ -25,6 +26,15 @@ export function TransactionInput({ onCreated }: { onCreated: () => void }) {
   async function handleParse() {
     setLoading(true)
     setError(null)
+
+    // Check if user is trying to input multiple transactions
+    const quoteCount = (raw.match(/"/g) || []).length
+    if (quoteCount > 2) {
+      setError("Please enter one transaction at a time. Multiple transactions detected.")
+      setLoading(false)
+      return
+    }
+
     try {
       const res = await fetch("/api/transactions/parse", {
         method: "POST",
@@ -32,8 +42,19 @@ export function TransactionInput({ onCreated }: { onCreated: () => void }) {
         body: JSON.stringify({ input: raw }),
       })
       const data = await res.json()
-      if (res.ok && !data.error) setParsed(data)
-      else setError(data.error || "Failed to parse")
+      if (res.ok) {
+        if (data.error && data.fallback) {
+          // Show fallback parsing result with warning
+          setParsed(data.fallback)
+          setError(data.error)
+        } else if (!data.error) {
+          setParsed(data)
+        } else {
+          setError(data.error || "Failed to parse")
+        }
+      } else {
+        setError(data.error || "Failed to parse")
+      }
     } catch (e: any) {
       setError(e.message || "Failed to parse")
     } finally {
@@ -65,6 +86,12 @@ export function TransactionInput({ onCreated }: { onCreated: () => void }) {
     }
   }
 
+  function handleClear() {
+    setRaw("")
+    setParsed(null)
+    setError(null)
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -72,21 +99,32 @@ export function TransactionInput({ onCreated }: { onCreated: () => void }) {
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Label htmlFor="nl">Describe your transaction</Label>
+          <Label htmlFor="nl" className="cursor-pointer">Describe your transaction</Label>
           <Input
             id="nl"
-            placeholder='e.g. "Coffee at Starbucks $6.50"'
+            placeholder='Enter one transaction at a time, e.g. : " Lunch $12.50 "'
             value={raw}
             onChange={(e) => setRaw(e.target.value)}
+            className="cursor-text"
           />
+          
         </div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
           <Button
             onClick={handleParse}
             disabled={!raw || loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
+            className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto cursor-pointer"
           >
             {loading ? "Parsing..." : "Parse with AI"}
+          </Button>
+          <Button
+            onClick={handleClear}
+            variant="outline"
+            disabled={!raw && !parsed && !error}
+            className="w-full sm:w-auto cursor-pointer"
+          >
+            <X className="w-4 h-4 mr-2" />
+            Clear
           </Button>
           {error && <span className="text-sm text-rose-600">{error}</span>}
         </div>
@@ -94,7 +132,7 @@ export function TransactionInput({ onCreated }: { onCreated: () => void }) {
         {parsed && (
           <div className="rounded-md border p-4 space-y-2">
             <div className="text-sm text-muted-foreground">
-              AI Parse (confidence {(parsed.confidence * 100).toFixed(0)}%)
+              {error && error.includes("fallback") ? "Fallback Parse" : "AI Parse"} (confidence {(parsed.confidence * 100).toFixed(0)}%)
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
               <div>
@@ -123,14 +161,14 @@ export function TransactionInput({ onCreated }: { onCreated: () => void }) {
               <Button
                 onClick={handleConfirm}
                 disabled={loading}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white w-full sm:w-auto"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white w-full sm:w-auto cursor-pointer"
               >
                 {loading ? "Saving..." : "Confirm & Save"}
               </Button>
               <Button
                 variant="outline"
                 onClick={() => setParsed(null)}
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto cursor-pointer"
               >
                 Cancel
               </Button>

@@ -14,6 +14,10 @@ import {
   YAxis,
   Legend,
   CartesianGrid,
+  BarChart,
+  Bar,
+  AreaChart,
+  Area,
 } from "recharts"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -59,17 +63,22 @@ export function TrendsLine() {
   const byKey = new Map<string, any>()
   for (const p of raw) {
     const key = `${p.year}-${String(p.month).padStart(2, "0")}`
-    const row = byKey.get(key) || { month: key, income: 0, expenses: 0 }
+    const row = byKey.get(key) || { month: key, income: 0, expenses: 0, savings: 0 }
     if (p.type === "INCOME") row.income = p.total
     else row.expenses = p.total
     byKey.set(key, row)
   }
-  const rows = Array.from(byKey.values())
+
+  // Calculate savings for each month
+  const rows = Array.from(byKey.values()).map(row => ({
+    ...row,
+    savings: row.income - row.expenses
+  }))
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Monthly Trends</CardTitle>
+        <CardTitle>Monthly Trends & Savings</CardTitle>
       </CardHeader>
       <CardContent className="h-72">
         {error ? (
@@ -84,9 +93,102 @@ export function TrendsLine() {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Line dataKey="income" stroke="#10b981" strokeWidth={2} />
-              <Line dataKey="expenses" stroke="#ef4444" strokeWidth={2} />
+              <Line dataKey="income" stroke="#10b981" strokeWidth={2} name="Income" />
+              <Line dataKey="expenses" stroke="#ef4444" strokeWidth={2} name="Expenses" />
+              <Line dataKey="savings" stroke="#2563eb" strokeWidth={2} name="Savings" />
             </LineChart>
+          </ResponsiveContainer>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+export function SpendingBarChart() {
+  const { data, error } = useSWR("/api/analytics/categories", fetcher, { refreshInterval: 20_000 })
+  const cat = data?.categories || []
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Spending by Category (Bar Chart)</CardTitle>
+      </CardHeader>
+      <CardContent className="h-72">
+        {error ? (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Unable to load chart data
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={cat}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="category" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="total" fill="#2563eb" />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+export function SavingsAreaChart() {
+  const { data, error } = useSWR("/api/analytics/trends", fetcher, { refreshInterval: 20_000 })
+  const raw: TrendPoint[] = data?.trends || []
+  const byKey = new Map<string, any>()
+  for (const p of raw) {
+    const key = `${p.year}-${String(p.month).padStart(2, "0")}`
+    const row = byKey.get(key) || { month: key, income: 0, expenses: 0 }
+    if (p.type === "INCOME") row.income = p.total
+    else row.expenses = p.total
+    byKey.set(key, row)
+  }
+
+  const rows = Array.from(byKey.values()).map(row => ({
+    ...row,
+    savings: row.income - row.expenses,
+    netWorth: row.income - row.expenses
+  }))
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Savings & Net Worth Trend</CardTitle>
+      </CardHeader>
+      <CardContent className="h-72">
+        {error ? (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Unable to load chart data
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={rows}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Area
+                type="monotone"
+                dataKey="savings"
+                stackId="1"
+                stroke="#10b981"
+                fill="#10b981"
+                fillOpacity={0.6}
+                name="Monthly Savings"
+              />
+              <Area
+                type="monotone"
+                dataKey="netWorth"
+                stackId="2"
+                stroke="#2563eb"
+                fill="#2563eb"
+                fillOpacity={0.4}
+                name="Net Worth"
+              />
+            </AreaChart>
           </ResponsiveContainer>
         )}
       </CardContent>
