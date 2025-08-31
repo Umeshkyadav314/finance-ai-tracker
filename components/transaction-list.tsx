@@ -27,7 +27,7 @@ export function TransactionList({ refreshKey }: { refreshKey: number }) {
     return `/api/transactions?${params.toString()}`
   }, [q, category, type, from, to, refreshKey])
 
-  const { data, mutate } = useSWR(query, fetcher)
+  const { data, error, mutate } = useSWR(query, fetcher)
   const items = data?.items || []
 
   async function remove(id: string) {
@@ -109,49 +109,54 @@ export function TransactionList({ refreshKey }: { refreshKey: number }) {
       </div>
 
       <div className="rounded-md border divide-y">
-        {items.map((t: any) => (
-          <div key={t._id} className="p-3 sm:p-4">
-            {/* Mobile layout - stacked */}
-            <div className="flex flex-col sm:hidden space-y-2">
-              <div className="flex items-start justify-between">
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium truncate">{t.description || t.category}</div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    {new Date(t.date).toLocaleDateString()} • {t.category}
+        {error ? (
+          <div className="p-6 text-center text-sm text-muted-foreground">
+            Unable to load transactions. Please check your connection and try again.
+          </div>
+        ) : items.length === 0 ? (
+          <div className="p-6 text-center text-sm text-muted-foreground">No transactions found.</div>
+        ) : (
+          items.map((t: any) => (
+            <div key={t._id} className="p-3 sm:p-4">
+              {/* Mobile layout - stacked */}
+              <div className="flex flex-col sm:hidden space-y-2">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium truncate">{t.description || t.category}</div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {new Date(t.date).toLocaleDateString()} • {t.category}
+                    </div>
+                  </div>
+                  <div className={`font-semibold text-right ${t.type === "INCOME" ? "text-emerald-600" : "text-rose-600"}`}>
+                    {t.type === "INCOME" ? "+" : "-"}${Math.abs(t.amount).toFixed(2)}
                   </div>
                 </div>
-                <div className={`font-semibold text-right ${t.type === "INCOME" ? "text-emerald-600" : "text-rose-600"}`}>
-                  {t.type === "INCOME" ? "+" : "-"}${Math.abs(t.amount).toFixed(2)}
+                <div className="flex justify-end">
+                  <Button size="sm" variant="outline" onClick={() => remove(t._id)} className="text-xs">
+                    Delete
+                  </Button>
                 </div>
               </div>
-              <div className="flex justify-end">
-                <Button size="sm" variant="outline" onClick={() => remove(t._id)} className="text-xs">
-                  Delete
-                </Button>
-              </div>
-            </div>
 
-            {/* Desktop layout - horizontal */}
-            <div className="hidden sm:flex items-center justify-between">
-              <div className="flex flex-col">
-                <div className="text-sm font-medium">{t.description || t.category}</div>
-                <div className="text-xs text-muted-foreground">
-                  {new Date(t.date).toLocaleString()} • {t.category}
+              {/* Desktop layout - horizontal */}
+              <div className="hidden sm:flex items-center justify-between">
+                <div className="flex flex-col">
+                  <div className="text-sm font-medium">{t.description || t.category}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {new Date(t.date).toLocaleString()} • {t.category}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className={`font-semibold ${t.type === "INCOME" ? "text-emerald-600" : "text-rose-600"}`}>
-                  {t.type === "INCOME" ? "+" : "-"}${Math.abs(t.amount).toFixed(2)}
+                <div className="flex items-center gap-4">
+                  <div className={`font-semibold ${t.type === "INCOME" ? "text-emerald-600" : "text-rose-600"}`}>
+                    {t.type === "INCOME" ? "+" : "-"}${Math.abs(t.amount).toFixed(2)}
+                  </div>
+                  <Button size="sm" variant="outline" onClick={() => remove(t._id)}>
+                    Delete
+                  </Button>
                 </div>
-                <Button size="sm" variant="outline" onClick={() => remove(t._id)}>
-                  Delete
-                </Button>
               </div>
             </div>
-          </div>
-        ))}
-        {items.length === 0 && (
-          <div className="p-6 text-center text-sm text-muted-foreground">No transactions found.</div>
+          ))
         )}
       </div>
     </div>

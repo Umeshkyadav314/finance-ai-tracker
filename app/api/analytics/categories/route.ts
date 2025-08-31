@@ -7,19 +7,28 @@ export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions)
   if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-  const users = await usersCollection()
-  const user = await users.findOne({ email: session.user.email })
-  if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
+  try {
+    const users = await usersCollection()
+    if (!users) return NextResponse.json({ error: "Database not available" }, { status: 503 })
 
-  const trx = await transactionsCollection()
-  const categories = await trx
-    .aggregate([
-      { $match: { userId: String(user._id), type: "EXPENSE" } },
-      { $group: { _id: "$category", total: { $sum: "$amount" } } },
-      { $project: { category: "$_id", _id: 0, total: 1 } },
-      { $sort: { total: -1 } },
-    ])
-    .toArray()
+    const user = await users.findOne({ email: session.user.email })
+    if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 })
 
-  return NextResponse.json({ categories })
+    const trx = await transactionsCollection()
+    if (!trx) return NextResponse.json({ error: "Database not available" }, { status: 503 })
+
+    const categories = await trx
+      .aggregate([
+        { $match: { userId: String(user._id), type: "EXPENSE" } },
+        { $group: { _id: "$category", total: { $sum: "$amount" } } },
+        { $project: { category: "$_id", _id: 0, total: 1 } },
+        { $sort: { total: -1 } },
+      ])
+      .toArray()
+
+    return NextResponse.json({ categories })
+  } catch (error) {
+    console.error("Error in analytics categories:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
 }
