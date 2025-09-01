@@ -1,6 +1,7 @@
 "use client";
 
 import { AuthButton } from "@/components/auth-button";
+import FooterPage from "@/components/footer-page";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -122,11 +123,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <footer className="border-t">
-        <div className="mx-auto max-w-5xl px-4 py-6 text-sm text-muted-foreground">
-          © {new Date().getFullYear()} WarrantyMe — Finance AI Tracker
-        </div>
-      </footer>
+      <FooterPage />
     </main>
   );
 }

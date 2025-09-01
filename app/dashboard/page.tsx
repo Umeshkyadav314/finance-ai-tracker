@@ -6,9 +6,10 @@ import { redirect } from "next/navigation"
 import { SummaryCards } from "@/components/summary-cards"
 import { CategoryPie, TrendsLine, SpendingBarChart, SavingsAreaChart } from "@/components/charts"
 import { TransactionInput } from "@/components/transaction-input"
-import { TransactionList } from "@/components/transaction-list"
+
 import { AuthButton } from "@/components/auth-button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import TransactionList from "@/components/transaction-list"
 
 export default function DashboardPage() {
   const { data: session, status } = useSession()
